@@ -25,20 +25,20 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 class FuTEST(IStrategy):
 
     INTERFACE_VERSION = 3
-    timeframe = "5m"
+    timeframe = "15m"
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {"60": 0.075, "30": 0.1, "0": 0.05}
     # minimal_roi = {"0": 1}
 
-    stoploss = -0.05
+    stoploss = -0.10
     can_short = True
 
     # Trailing stoploss
     trailing_stop = True
-    # trailing_only_offset_is_reached = False
-    # trailing_stop_positive = 0.01
-    # trailing_stop_positive_offset = 0.0  # Disabled / not configured
+    trailing_only_offset_is_reached = False
+    trailing_stop_positive = 0.01
+    trailing_stop_positive_offset = 0.0  # Disabled / not configured
 
     # Run "populate_indicators()" only for new candle.
     process_only_new_candles = False
@@ -78,12 +78,12 @@ class FuTEST(IStrategy):
         conditions_short = []
 
         # GUARDS AND TRIGGERS
-        #conditions_long.append(
-         #   dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
-        #)
-        #conditions_short.append(
-         #   dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
-        #)
+        conditions_long.append(
+            dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
+        )
+        conditions_short.append(
+            dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
+        )
 
         conditions_long.append(
             qtpylib.crossed_above(
