@@ -25,7 +25,7 @@ import freqtrade.vendor.qtpylib.indicators as qtpylib
 class FuTEST(IStrategy):
 
     INTERFACE_VERSION = 3
-    timeframe = "1h"
+    timeframe = "5min"
     # Minimal ROI designed for the strategy.
     # This attribute will be overridden if the config file contains "minimal_roi".
     minimal_roi = {"60": 0.075, "30": 0.1, "0": 0.05}
@@ -35,7 +35,7 @@ class FuTEST(IStrategy):
     can_short = True
 
     # Trailing stoploss
-    trailing_stop = False
+    trailing_stop = True
     # trailing_only_offset_is_reached = False
     # trailing_stop_positive = 0.01
     # trailing_stop_positive_offset = 0.0  # Disabled / not configured
@@ -54,8 +54,8 @@ class FuTEST(IStrategy):
 
     # Define the parameter spaces
     adx_period = IntParameter(4, 24, default=14)
-    sma_short_period = IntParameter(4, 24, default=12)
-    sma_long_period = IntParameter(12, 175, default=48)
+    sma_short_period = IntParameter(4, 24, default=5)
+    sma_long_period = IntParameter(5, 210, default=203)
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -78,12 +78,12 @@ class FuTEST(IStrategy):
         conditions_short = []
 
         # GUARDS AND TRIGGERS
-        conditions_long.append(
-            dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
-        )
-        conditions_short.append(
-            dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
-        )
+        #conditions_long.append(
+         #   dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
+        #)
+        #conditions_short.append(
+         #   dataframe[f"adx_{self.adx_period.value}"] > self.pos_entry_adx.value
+        #)
 
         conditions_long.append(
             qtpylib.crossed_above(
